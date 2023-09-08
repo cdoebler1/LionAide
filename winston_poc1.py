@@ -1,5 +1,5 @@
-#pip install tkinter
-#pip install pywebview
+# pip install tkinter
+# pip install pywebview
 
 
 import tkinter as tk
