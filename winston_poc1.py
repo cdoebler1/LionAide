@@ -1,6 +1,3 @@
-# pip install tkinter
-# pip install pywebview
-
 
 import tkinter as tk
 import webview
