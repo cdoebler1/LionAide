@@ -1,8 +1,8 @@
-# -*- coding: utf-8 -*-
 """
-Created on Sat May 20 19:42:50 2023
+LionAIde client interface in Python
 
-@author: c_doe
+@author: Charles Doebler
+@email: cdoebler1@gmail.com
 """
 from langchain.llms import OpenAI
 import gradio as gr
@@ -13,10 +13,7 @@ tk = tk.Tk()
 
 tk.geometry("800x450")
 
-squirrel = "http://10.0.0.241:5001/v1"
-# model = "TheBLOK_vicuna-13b-v1.3.0-GPTQ"
-
-# winston = OpenAI(model_name=model, openai_api_key="NotNeeded", openai_api_base=squirrel, temperature=0.5, max_tokens=512)
+squirrel = "http://http://73.175.148.240:5001/v1"
 
 winston = OpenAI(openai_api_key="NotNeeded", openai_api_base=squirrel, temperature=0.5, max_tokens=512)
 
