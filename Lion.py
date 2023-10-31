@@ -13,7 +13,7 @@ tk = tk.Tk()
 
 tk.geometry("800x450")
 
-squirrel = "http://http://73.175.148.240:5001/v1"
+squirrel = "http://73.175.148.240:5001/v1"
 
 winston = OpenAI(openai_api_key="NotNeeded", openai_api_base=squirrel, temperature=0.5, max_tokens=512)
 
