@@ -1,7 +1,10 @@
 # If unsure about what library to import temporarily use wildcard '*'
 from tkinter import Toplevel, Tk
 from tkinter import ttk
+import json
 
+with open('users.json', "r") as f: users_data=json.load(f)
+print(users_data) # debug code for verifying that the array was built
 
 class Menus:
 
