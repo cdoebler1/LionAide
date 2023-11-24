@@ -27,8 +27,8 @@ class Menus:
         self.frame_content.grid(row=0, column=0, sticky='nsew')
 
         # Add the labels and text boxes to the frame_content frame
-        ttk.Label(self.frame_content, text='UserName:').grid(row=1, column=1, pady=10)
-        ttk.Label(self.frame_content, text='Password:').grid(row=2, column=1, pady=5)
+        ttk.Label(self.frame_content, text='UserName:', style="White.TLabel").grid(row=1, column=1, pady=10)
+        ttk.Label(self.frame_content, text='Password:', style="White.TLabel").grid(row=2, column=1, pady=5)
 
         # Text entry for UserName:
         self.username_entry = ttk.Entry(self.frame_content)
@@ -182,6 +182,8 @@ def main():
     LionAIdeTheme = "blue"
     style = ttk.Style(root)
     style.theme_use(LionAIdeTheme)
+    #style.configure('White.TLabel', foreground='white', background="#7B8CD0")
+    style.configure('White.TLabel', foreground='white')
     menus = Menus(root)
     root.mainloop()
 
