@@ -30,12 +30,15 @@ class Menus:
         ttk.Label(self.frame_content, text='UserName:', style="White.TLabel").grid(row=1, column=1, pady=10)
         ttk.Label(self.frame_content, text='Password:', style="White.TLabel").grid(row=2, column=1, pady=5)
 
-        # Text entry for UserName:
-        self.username_entry = ttk.Entry(self.frame_content)
+        # Excludes Admin from Combobox for usernames
+        usernames = [user for user in users_data.keys() if user != 'Admin']
+
+        # Combobox entry for Username:
+        self.username_entry = ttk.Combobox(self.frame_content, values=usernames)
         self.username_entry.grid(row=1, column=2)
 
         # Text entry for Password:
-        self.password_entry = ttk.Entry(self.frame_content, show="*")
+        self.password_entry = ttk.Entry(self.frame_content, width=22, show="*")
         self.password_entry.grid(row=2, column=2)
 
         # Create a new frame for the buttons
