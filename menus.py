@@ -1,10 +1,13 @@
 # If unsure about what library to import temporarily use wildcard '*'
-from tkinter import Toplevel, Tk
+from tkinter import Toplevel
 from tkinter import ttk
 from ttkthemes import ThemedTk
 import json
 
-with open('users.json', "r") as f: users_data = json.load(f)
+# Opens the users.JSON file and reads them into an array users_data
+with open('users.json', "r") as f:
+    users_data = json.load(f)
+
 print(users_data)  # debug code for verifying that the array was built
 
 
@@ -24,11 +27,12 @@ class Menus:
         master.geometry("400x200")
 
         self.frame_content = ttk.Frame(master)
-        self.frame_content.grid(row=0, column=0, sticky='nsew')
+        self.frame_content.grid(row=0, column=0, sticky='nesw')
 
         # Add the labels and text boxes to the frame_content frame
-        ttk.Label(self.frame_content, text='UserName:', style="White.TLabel").grid(row=1, column=1, pady=10)
-        ttk.Label(self.frame_content, text='Password:', style="White.TLabel").grid(row=2, column=1, pady=5)
+        ttk.Label(self.frame_content, text='UserName:', style="White.TLabel").grid(row=1, column=1, pady=10, padx=10)
+        ttk.Label(self.frame_content, text='Password:', style="White.TLabel").grid(row=2, column=1, pady=5, padx=10)
+        ttk.Label(self.frame_content, text='Personality:', style="White.TLabel").grid(row=3, column=1, pady=5, padx=10)
 
         # Excludes Admin from Combobox for usernames
         usernames = [user for user in users_data.keys() if user != 'Admin']
@@ -37,11 +41,15 @@ class Menus:
         self.username_entry = ttk.Combobox(self.frame_content, values=usernames)
         self.username_entry.grid(row=1, column=2)
 
-        # Text entry for Password:
+        # Text entry for Password and 'width=22' resizes entry box to match combobox width
         self.password_entry = ttk.Entry(self.frame_content, width=22, show="*")
         self.password_entry.grid(row=2, column=2)
 
-        # Create a new frame for the buttons
+        # Combobox for personality choice. JSON not yet created for personalities, Temporarily set to usernames to test.
+        self.personality_entry = ttk.Combobox(self.frame_content, values=usernames)
+        self.personality_entry.grid(row=3, column=2)
+
+        # Create a new frame for the buttons Login and Register
         button_frame = ttk.Frame(master)
         button_frame.grid(row=1, column=0, sticky='nsew')
 
@@ -49,10 +57,15 @@ class Menus:
         master.grid_rowconfigure(0, weight=1)
         master.grid_columnconfigure(0, weight=1)
 
+        # Creates a new frame for the Admin Window Button
+        admin_button_frame = ttk.Frame(master)
+        admin_button_frame.grid(row=0, column=0, sticky='ne')
+
         # Add the buttons to the new frame
         # Note: Login temporarily is set to open chat_window when its pressed
-        ttk.Button(button_frame, text='Login', command=self.chat_window).grid(row=0, column=0)
-        ttk.Button(button_frame, text='Register', command=self.account_creation).grid(row=0, column=1)
+        ttk.Button(button_frame, text='Login', command=self.chat_window).grid(row=4, column=0)
+        ttk.Button(button_frame, text='Register', command=self.account_creation).grid(row=4, column=1)
+        ttk.Button(admin_button_frame, text='Admin Window', command=self.admin_window).grid(row=0, column=0)
 
         # Configure the grid to distribute space evenly between the buttons
         button_frame.grid_columnconfigure(0, weight=1)
@@ -70,20 +83,17 @@ class Menus:
         chat.configure(background='#bfffff')
         chat.geometry("800x450")
 
-        # Sets locations to buttons Options, user, personality and admin window
-        ttk.Button(chat, text='Options').grid(row=0, column=0, sticky='w')
-        ttk.Button(chat, text='User').grid(row=0, column=1, sticky='w')
-        ttk.Button(chat, text='Personality').grid(row=0, column=2, sticky='w')
-        ttk.Button(chat, text='Admin Window', command=self.admin_window).grid(row=0,
-                                                                              column=6, sticky='ne')
+        # Sets End Session button to chat_window and creates variable end_session_button for .pack
+        end_session_button = ttk.Button(chat, text='End Session', command=chat.destroy)
 
-        # Occupies column 3-6 to space Admin Window button to the right corner
-        for i in range(3, 6):
-            chat.grid_columnconfigure(i, weight=1)
+        # NOTE: Consider using .pack instead of .grid since this seems cleaner to work with.
+        # Utilizes .pack instead of .grid to test other methods of organization
+        end_session_button.pack(side='bottom', anchor='e', padx=5, pady=5)
 
     def admin_window(self):
         admin = Toplevel()
         admin.title("Admin Window")
+        admin.resizable(False, False)
         admin.geometry("400x200")
 
         # Configure the columns for the buttons
@@ -106,6 +116,7 @@ class Menus:
     def edit_user_account(self):
         account = Toplevel()
         account.title("Edit User Accounts")
+        account.resizable(False, False)
         account.geometry("400x250")
 
         # Creates the button and entry box for Admin
@@ -139,6 +150,7 @@ class Menus:
     def edit_user_personality(self):
         personality = Toplevel()
         personality.title("Edit User Personality")
+        personality.resizable(False, False)
         personality.geometry("400x200")
 
         # Creates label and entry box for Personality
@@ -163,6 +175,7 @@ class Menus:
     def account_creation(self):
         creation = Toplevel()
         creation.title("Create Account")
+        creation.resizable(False, False)
         creation.geometry("400x200")
 
         # Creates label and entry box for Username
@@ -185,7 +198,7 @@ def main():
     LionAIdeTheme = "blue"
     style = ttk.Style(root)
     style.theme_use(LionAIdeTheme)
-    #style.configure('White.TLabel', foreground='white', background="#7B8CD0")
+    # style.configure('White.TLabel', foreground='white', background="#7B8CD0")
     style.configure('White.TLabel', foreground='white')
     menus = Menus(root)
     root.mainloop()
