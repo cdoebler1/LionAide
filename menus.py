@@ -1,6 +1,7 @@
 # If unsure about what library to import temporarily use wildcard '*'
 from tkinter import Toplevel, Tk
 from tkinter import ttk
+from ttkthemes import ThemedTk
 import json
 
 with open('users.json', "r") as f: users_data = json.load(f)
@@ -177,7 +178,10 @@ class Menus:
 
 
 def main():
-    root = Tk()
+    root = ThemedTk()
+    LionAIdeTheme = "blue"
+    style = ttk.Style(root)
+    style.theme_use(LionAIdeTheme)
     menus = Menus(root)
     root.mainloop()
 
