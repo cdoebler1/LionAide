@@ -1,22 +1,16 @@
 # If unsure about what library to import temporarily use wildcard '*'
-from tkinter import Toplevel
-from tkinter import ttk
+from tkinter import Toplevel, ttk
 from ttkthemes import ThemedTk
-import json
-
-# Opens the users.JSON file and reads them into an array users_data
-with open('users.json', "r") as f:
-    users_data = json.load(f)
-
-print(users_data)  # debug code for verifying that the array was built
+from user_manager import UserManager
 
 
 class Menus:
 
-    def __init__(self, master):
+    def __init__(self, master, users_data, personality_data):
+        self.users_data = users_data
         # Should we have multiple entry variables or just username_entry and password_entry?
         # Entry variable for edit_User_personality method
-        self.personality_entry = None
+        self.personality_entry = personality_data
         # Entry variable for account_creation method
         self.account_entry = None
         # Entry variable for edit_user_accounts method
@@ -46,7 +40,8 @@ class Menus:
         self.password_entry.grid(row=2, column=2)
 
         # Combobox for personality choice. JSON not yet created for personalities, Temporarily set to usernames to test.
-        self.personality_entry = ttk.Combobox(self.frame_content, values=usernames)
+        personalityNames = [names for names in personality_data.keys()]
+        self.personality_entry = ttk.Combobox(self.frame_content, values=personalityNames)
         self.personality_entry.grid(row=3, column=2)
 
         # Create a new frame for the buttons Login and Register
@@ -64,7 +59,7 @@ class Menus:
         # Add the buttons to the new frame
         # Note: Login temporarily is set to open chat_window when its pressed
         ttk.Button(button_frame, text='Login', command=self.chat_window).grid(row=4, column=0)
-        ttk.Button(button_frame, text='Register', command=self.account_creation).grid(row=4, column=1)
+        #ttk.Button(button_frame, text='Register', command=self.account_creation).grid(row=4, column=1)
         ttk.Button(admin_button_frame, text='Admin Window', command=self.admin_window).grid(row=0, column=0)
 
         # Configure the grid to distribute space evenly between the buttons
@@ -121,88 +116,5 @@ class Menus:
 
         # Creates the button and entry box for Admin
         ttk.Label(account, text='Admin:').grid(row=1, column=2, padx=50, pady=10)
-        self.edit_accounts_entry = ttk.Entry(account)
-        self.edit_accounts_entry.grid(row=1, column=3)
-
-        # Creates the button and entry box for an Admin Password
-        ttk.Label(account, text='Password:').grid(row=2, column=2, padx=10, pady=10)
-        self.edit_accounts_entry = ttk.Entry(account)
-        self.edit_accounts_entry.grid(row=2, column=3)
-
-        # Buttons that Add and Delete an Admin account
-        ttk.Button(account, text='Add', command=account.destroy).grid(row=3, column=2, sticky='e')
-        ttk.Button(account, text='Delete', command=account.destroy).grid(row=3, column=3, sticky='e')
-
-        # Creates the button and entry box for Password
-        ttk.Label(account, text='User:').grid(row=4, column=2, padx=10, pady=10)
-        self.edit_accounts_entry = ttk.Entry(account)
-        self.edit_accounts_entry.grid(row=4, column=3)
-
-        # Creates the button and entry box for a User Password
-        ttk.Label(account, text='Password:').grid(row=5, column=2, padx=10, pady=10)
-        self.edit_accounts_entry = ttk.Entry(account)
-        self.edit_accounts_entry.grid(row=5, column=3)
-
-        # Button 'save' saves to JSON file and Done closes the window (Save is not yet functional)
-        ttk.Button(account, text='Save', command=account.destroy).grid(row=6, column=2, sticky='e')
-        ttk.Button(account, text='Done', command=account.destroy).grid(row=6, column=3, sticky='e')
-
-    def edit_user_personality(self):
-        personality = Toplevel()
-        personality.title("Edit User Personality")
-        personality.resizable(False, False)
-        personality.geometry("400x200")
-
-        # Creates label and entry box for Personality
-        ttk.Label(personality, text='Enter a Personality Name:').grid(row=1, column=1, padx=10, pady=10)
-        self.personality_entry = ttk.Entry(personality)
-        self.personality_entry.grid(row=1, column=2)
-
-        # Creates label and entry box for Description
-        ttk.Label(personality, text='Enter a Description:').grid(row=2, column=1, padx=10, pady=10)
-        self.personality_entry = ttk.Entry(personality)
-        self.personality_entry.grid(row=2, column=2)
-
-        # Creates label and entry box for Definition
-        ttk.Label(personality, text='Enter a Definition:').grid(row=3, column=1, padx=10, pady=10)
-        self.personality_entry = ttk.Entry(personality)
-        self.personality_entry.grid(row=3, column=2)
-
-        # Creates Save and Done buttons for edit_user_personality window
-        ttk.Button(personality, text='Save', command=personality.destroy).grid(row=4, column=1, sticky='s')
-        ttk.Button(personality, text='Done', command=personality.destroy).grid(row=4, column=2, sticky='s')
-
-    def account_creation(self):
-        creation = Toplevel()
-        creation.title("Create Account")
-        creation.resizable(False, False)
-        creation.geometry("400x200")
-
-        # Creates label and entry box for Username
-        ttk.Label(creation, text='Enter a Username:').grid(row=1, column=1, padx=10, pady=10)
-        self.account_entry = ttk.Entry(creation)
-        self.account_entry.grid(row=1, column=2)
-
-        # Creates label and entry box for Password
-        ttk.Label(creation, text='Enter Password:').grid(row=3, column=1, padx=10, pady=10)
-        self.account_entry = ttk.Entry(creation)
-        self.account_entry.grid(row=3, column=2)
-
-        # Creates the two buttons Submit and Done. NOTE: Submit is temporarily set to close the window.
-        ttk.Button(creation, text='Submit', command=creation.destroy).grid(row=2, column=2, sticky='s')
-        ttk.Button(creation, text='Done', command=creation.destroy).grid(row=4, column=2, sticky='s')
-
-
-def main():
-    root = ThemedTk()
-    LionAIdeTheme = "blue"
-    style = ttk.Style(root)
-    style.theme_use(LionAIdeTheme)
-    # style.configure('White.TLabel', foreground='white', background="#7B8CD0")
-    style.configure('White.TLabel', foreground='white')
-    menus = Menus(root)
-    root.mainloop()
-
-
-if __name__ == "__main__":
-    main()
+        self.edit_accounts_entry_admin = ttk.Entry(account)
+        self.edit_accounts_entry_admin.grid(row=1, column=3)
