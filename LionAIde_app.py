@@ -8,9 +8,9 @@ from personality_manager import PersonalityManager
 
 def main():
     root = ThemedTk()
-    lionaidetheme = "blue"
+    lionAideTheme = "blue"
     style = ttk.Style(root)
-    style.theme_use(lionaidetheme)
+    style.theme_use(lionAideTheme)
 
     user_manager = UserManager()
     personality_manager = PersonalityManager()
