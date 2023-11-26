@@ -1,6 +1,7 @@
 from tkinter import ttk
 
 from AccountHandler import AccountHandler
+from AdminWindow import AdminWindow
 from ChatWindow import ChatWindow
 
 
@@ -47,7 +48,7 @@ class LoginWindow:
         ttk.Button(button_frame, text='Login',
                    command=lambda: self.check_credentials(users_data, personality_data)).grid(row=0, column=0)
 
-        # ttk.Button(button_frame, text='Register', command=self.account_creation).grid(row=0, column=1)
+        ttk.Button(button_frame, text='Admin Login', command=lambda: self.check_admin(users_data, personality_data)).grid(row=0, column=1)
 
         # Configure the grid to distribute space evenly between the buttons
         button_frame.grid_columnconfigure(0, weight=1)
@@ -66,9 +67,25 @@ class LoginWindow:
 
         if is_valid_credentials:
             self.create_chat_window(users_data, personality_data)
-            print("Successful login.") # Text for testing
+            print("Successful login.")  # Text for testing
         else:
-            print("Password is incorrect.") # Text for testing
+            print("Password is incorrect.")  # Text for testing
+
+    def check_admin(self, users_data, personality_data):
+        # Get the entered username and password
+        username = self.username_entry.get()
+        password = self.password_entry.get()
+        handler = AccountHandler()
+        is_valid_credentials = handler.verify_admin(users_data, username, password)
+
+        if is_valid_credentials:
+            self.create_admin_window(users_data, personality_data)
+            print("Successful login for Admin.")  # Text for testing
+        else:
+            print("Password is incorrect.")  # Text for testing
 
     def create_chat_window(self, users_data, personality_data):
         ChatWindow(users_data, personality_data)
+
+    def create_admin_window(self, users_data, personality_data):
+        AdminWindow(users_data, personality_data)
