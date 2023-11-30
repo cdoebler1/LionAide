@@ -8,9 +8,8 @@ from ChatWindow import ChatWindow
 class LoginWindow:
 
     def __init__(self, master, users_data, personality_data):
-        # Should we have multiple entry variables or just username_entry and password_entry?
-        # Entry variable for edit_User_personality method
-        self.personality_entry = None
+        self.users_data = users_data
+        self.personality_entry = personality_data
         # Entry variable for account_creation method
         self.account_entry = None
         # Entry variable for edit_user_accounts method
@@ -26,22 +25,35 @@ class LoginWindow:
         # Add the labels and text boxes to the frame_content frame
         ttk.Label(self.frame_content, text='UserName:', style="White.TLabel").grid(row=1, column=1, pady=10)
         ttk.Label(self.frame_content, text='Password:', style="White.TLabel").grid(row=2, column=1, pady=5)
+        ttk.Label(self.frame_content, text='Personality:', style="White.TLabel").grid(row=3, column=1, pady=5, padx=10)
 
-        # Text entry for UserName:
-        self.username_entry = ttk.Entry(self.frame_content)
+        # Excludes Admin from Combobox for usernames
+        usernames = [user for user in users_data.keys() if user != 'Admin']
+
+        # Combobox entry for Username:
+        self.username_entry = ttk.Combobox(self.frame_content, values=usernames)
         self.username_entry.grid(row=1, column=2)
 
-        # Text entry for Password:
-        self.password_entry = ttk.Entry(self.frame_content, show="*")
+        # Text entry for Password and 'width=22' resizes entry box to match combobox width
+        self.password_entry = ttk.Entry(self.frame_content, width=22, show="*")
         self.password_entry.grid(row=2, column=2)
 
-        # Create a new frame for the buttons
+        # Combobox for personality choice. JSON not yet created for personalities, Temporarily set to usernames to test.
+        personalityNames = [names for names in personality_data.keys()]
+        self.personality_entry = ttk.Combobox(self.frame_content, values=personalityNames)
+        self.personality_entry.grid(row=3, column=2)
+
+        # Create a new frame for the buttons Login and Register
         button_frame = ttk.Frame(master)
         button_frame.grid(row=1, column=0, sticky='nsew')
 
         # Configure the grid to distribute space evenly between rows and columns
         master.grid_rowconfigure(0, weight=1)
         master.grid_columnconfigure(0, weight=1)
+
+        # Creates a new frame for the Admin Window Button
+        admin_button_frame = ttk.Frame(master)
+        admin_button_frame.grid(row=0, column=0, sticky='ne')
 
         # Add the buttons to the new frame
         # Note: Login temporarily is set to open chat_window when its pressed

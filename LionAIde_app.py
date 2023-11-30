@@ -1,9 +1,9 @@
 # LionAIde_app.py
 from ttkthemes import ThemedTk
 from tkinter import ttk
-from menus import Menus
 from user_manager import UserManager
 from personality_manager import PersonalityManager
+from LoginWindow import LoginWindow
 
 
 def main():
@@ -14,7 +14,7 @@ def main():
 
     user_manager = UserManager()
     personality_manager = PersonalityManager()
-    menus = Menus(root, user_manager.users_data, personality_manager.personalities_data)
+    Logon = LoginWindow(root, user_manager.users_data, personality_manager.personalities_data)
 
     root.mainloop()
 
