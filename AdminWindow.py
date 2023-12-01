@@ -1,4 +1,4 @@
-from tkinter import Toplevel, Tk
+from tkinter import Toplevel
 from tkinter import ttk
 from ttkthemes import ThemedTk
 import json
@@ -7,59 +7,70 @@ import json
 class AdminWindow:
 
     def __init__(self, users_data, personality_data):
-        admin = Toplevel()
+        self.personality_entry = None
+        self.edit_accounts_entry = None
+        admin = ThemedTk()
         admin.title("Admin Window")
-        admin.geometry("400x200")
+        admin.resizable(False, False)
+        admin.geometry("400x600")
+        lion_aide_theme = "blue"
+        style = ttk.Style(admin)
+        style.theme_use(lion_aide_theme)
+
+        select_frame = ttk.Frame(admin)
+        select_frame.grid(row=0, column=0, padx=5, pady=5, sticky='nsew')
 
         # Configure the columns for the buttons
-        admin.grid_columnconfigure(0, weight=1)
+        select_frame.grid_columnconfigure(0, weight=1)
 
         # Configure the grid row for the buttons
-        admin.grid_rowconfigure(0, weight=1)
-        admin.grid_rowconfigure(1, weight=1)
-        admin.grid_rowconfigure(2, weight=1)
+        # admin.grid_rowconfigure(0, weight=1)
+        # admin.grid_rowconfigure(1, weight=1)
+        # admin.grid_rowconfigure(2, weight=1)
 
         # Creates the buttons for the admin_window
-        ttk.Button(admin, text='Edit User Accounts', command=self.edit_user_account, width=20).grid(
-            row=0, column=0, sticky='s', padx=10, pady=10)
-        ttk.Button(admin, text='Edit Personalities', command=self.edit_user_personality, width=20).grid(
-            row=1, column=0, sticky='s', padx=10, pady=10)
+        ttk.Button(select_frame, text='Edit User Accounts', command=self.edit_user_account(admin)).grid(
+            row=0, column=0, padx=10, pady=10)
+        ttk.Button(select_frame, text='Edit Personalities', command=self.edit_user_personality).grid(
+            row=0, column=1, padx=10, pady=10)
 
         # Done button destroys the window, closing it
-        ttk.Button(admin, text='Done', command=admin.destroy).grid(row=5, column=3, sticky='s')
+        ttk.Button(select_frame, text='Done', command=admin.destroy).grid(row=0, column=2)
 
-    def edit_user_account(self):
-        account = Toplevel()
-        account.title("Edit User Accounts")
-        account.geometry("400x250")
+    def edit_user_account(self, editing_window):
+        # account = Toplevel()
+        # account.title("Edit User Accounts")
+        # account.geometry("400x250")
+        admin = ttk.Frame(editing_window)
+        admin.grid(row=1, column=0, padx=5, pady=5, sticky='nsew')
 
         # Creates the button and entry box for Admin
-        ttk.Label(account, text='Admin:').grid(row=1, column=2, padx=50, pady=10)
-        self.edit_accounts_entry = ttk.Entry(account)
+        ttk.Label(admin, text='Admin:').grid(row=1, column=2, padx=50, pady=10)
+        self.edit_accounts_entry = ttk.Entry(admin)
         self.edit_accounts_entry.grid(row=1, column=3)
 
         # Creates the button and entry box for an Admin Password
-        ttk.Label(account, text='Password:').grid(row=2, column=2, padx=10, pady=10)
-        self.edit_accounts_entry = ttk.Entry(account)
+        ttk.Label(admin, text='Password:').grid(row=2, column=2, padx=10, pady=10)
+        self.edit_accounts_entry = ttk.Entry(admin)
         self.edit_accounts_entry.grid(row=2, column=3)
 
         # Buttons that Add and Delete an Admin account
-        ttk.Button(account, text='Add', command=account.destroy).grid(row=3, column=2, sticky='e')
-        ttk.Button(account, text='Delete', command=account.destroy).grid(row=3, column=3, sticky='e')
+        ttk.Button(admin, text='Add', command=admin.destroy).grid(row=3, column=2, sticky='e')
+        ttk.Button(admin, text='Delete', command=admin.destroy).grid(row=3, column=3, sticky='e')
 
         # Creates the button and entry box for Password
-        ttk.Label(account, text='User:').grid(row=4, column=2, padx=10, pady=10)
-        self.edit_accounts_entry = ttk.Entry(account)
+        ttk.Label(admin, text='User:').grid(row=4, column=2, padx=10, pady=10)
+        self.edit_accounts_entry = ttk.Entry(admin)
         self.edit_accounts_entry.grid(row=4, column=3)
 
         # Creates the button and entry box for a User Password
-        ttk.Label(account, text='Password:').grid(row=5, column=2, padx=10, pady=10)
-        self.edit_accounts_entry = ttk.Entry(account)
+        ttk.Label(admin, text='Password:').grid(row=5, column=2, padx=10, pady=10)
+        self.edit_accounts_entry = ttk.Entry(admin)
         self.edit_accounts_entry.grid(row=5, column=3)
 
         # Button 'save' saves to JSON file and Done closes the window (Save is not yet functional)
-        ttk.Button(account, text='Save', command=account.destroy).grid(row=6, column=2, sticky='e')
-        ttk.Button(account, text='Done', command=account.destroy).grid(row=6, column=3, sticky='e')
+        ttk.Button(admin, text='Save', command=admin.destroy).grid(row=6, column=2, sticky='e')
+        ttk.Button(admin, text='Done', command=admin.destroy).grid(row=6, column=3, sticky='e')
 
     def edit_user_personality(self):
         personality = Toplevel()

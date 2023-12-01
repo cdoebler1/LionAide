@@ -4,3 +4,8 @@
 .idea/misc.xml
 .idea/LionAide.iml
 flagged/log.csv
+*.pyc
+*.pyc
+__pycache__/AccountHandler.cpython-311.pyc
+__pycache__/AdminWindow.cpython-311.pyc
+__pycache__/LoginWindow.cpython-311.pyc
