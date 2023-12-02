@@ -29,32 +29,43 @@ class LoginWindow:
         # Create a new frame for the user login
         user_frame = ttk.Frame(master)
         user_frame.grid(row=0, column=0, padx=5, pady=5, sticky='NSEW')
-        user_frame.grid_columnconfigure(1, weight=1)
+        user_frame.grid_columnconfigure(0, weight=1)
+        user_frame.grid_columnconfigure(1, weight=3)
+        user_frame.grid_columnconfigure(2, weight=3)
+        user_frame.grid_columnconfigure(3, weight=1)
+        user_frame.grid_rowconfigure(0, weight=1)
+        user_frame.grid_rowconfigure(1, weight=1)
+        user_frame.grid_rowconfigure(2, weight=1)
+        user_frame.grid_rowconfigure(3, weight=1)
 
         # Add the labels and text boxes to the frame_content frame
-        ttk.Label(user_frame, text='UserName:', style="White.TLabel").grid(row=0, column=0, pady=10, sticky="E")
-        ttk.Label(user_frame, text='Password:', style="White.TLabel").grid(row=1, column=0, pady=10)
-        ttk.Label(user_frame, text='Personality:', style="White.TLabel").grid(row=2, column=0, pady=10)
+        ttk.Label(user_frame, text='UserName:',
+                  style="White.TLabel").grid(row=0, column=1, padx=10, pady=10, sticky="E")
+        ttk.Label(user_frame, text='Password:',
+                  style="White.TLabel").grid(row=1, column=1, padx=10, pady=10, sticky="E")
+        ttk.Label(user_frame, text='Personality:',
+                  style="White.TLabel").grid(row=2, column=1, padx=10, pady=10, sticky="E")
 
         # Excludes Admin from Combobox for usernames
         usernames = [user for user in users_data.keys()]
 
         # Combobox entry for Username:
         self.username_entry = ttk.Combobox(user_frame, values=usernames)
-        self.username_entry.grid(row=0, column=1)
+        self.username_entry.grid(row=0, column=2, sticky="W")
 
         # Text entry for Password and 'width=22' resizes entry box to match combobox width
         self.password_entry = ttk.Entry(user_frame, width=22, show="*")
-        self.password_entry.grid(row=1, column=1)
+        self.password_entry.grid(row=1, column=2, sticky="W")
 
         # Combobox for personality choice.
         personality_names = [names for names in personality_data.keys()]
         self.personality_entry = ttk.Combobox(user_frame, values=personality_names)
-        self.personality_entry.grid(row=2, column=1)
+        self.personality_entry.grid(row=2, column=2, sticky="W")
 
         # Note: Login temporarily is set to open chat_window when its pressed
         ttk.Button(user_frame, text='Login',
-                   command=lambda: self.check_credentials(users_data, personality_data)).grid(row=3, column=1)
+                   command=lambda: self.check_credentials(users_data,
+                                                          personality_data)).grid(row=3, column=2, sticky="E")
 
     def check_credentials(self, users_data, personality_data):
         # Get the entered username and password
@@ -67,14 +78,15 @@ class LoginWindow:
             if username == "Admin":
                 self.create_admin_window(users_data, personality_data)
             else:
-                self.create_chat_window(users_data, personality_data)
+                personality = self.personality_entry.get()
+                self.create_chat_window(username, personality, users_data, personality_data)
             print("Successful login.")  # Text for testing
         else:
             print("Password is incorrect.")  # Text for testing
 
     @staticmethod
-    def create_chat_window(users_data, personality_data):
-        ChatWindow(users_data, personality_data)
+    def create_chat_window(username, personality, users_data, personality_data):
+        ChatWindow(username, personality, users_data, personality_data)
 
     @staticmethod
     def create_admin_window(users_data, personality_data):

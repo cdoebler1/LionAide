@@ -1,23 +1,39 @@
-from tkinter import Toplevel, Tk
+from ttkthemes import ThemedTk
 from tkinter import ttk
 class ChatWindow:
 
-    def __init__(self, users_data, personality_data):
+    def __init__(self, username, personality, users_data, personality_data):
 
         # The follow lines set the window size, color and window title
-        chat = Toplevel()
+        chat = ThemedTk()
+        style = ttk.Style(chat)
+        style.theme_use("blue")
+        style.configure('White.TLabel', font='Calibri 12', foreground='white')
+
         chat.title('LionAIde Application - Chat Window')
         chat.resizable(False, False)
         chat.configure(background='#bfffff')
         chat.geometry("800x450")
+        chat.grid_rowconfigure(0, weight=1)
+        chat.grid_columnconfigure(0, weight=1)
+
+        chat_options_frame = ttk.Frame(chat)
+        chat_options_frame.grid(row=0, column=0, padx=5, pady=5, sticky='NSEW')
+        chat_options_frame.grid_columnconfigure(0, weight=1)
+        chat_options_frame.grid_columnconfigure(1, weight=1)
+        chat_options_frame.grid_columnconfigure(2, weight=2)
+        chat_options_frame.grid_rowconfigure(0, weight=1)
+        chat_options_frame.grid_rowconfigure(1, weight=1)
+        chat_options_frame.grid_rowconfigure(2, weight=10)
+
+        personality_description = personality_data.get(personality)
 
         # Sets locations to buttons Options, user, personality and admin window
-        ttk.Button(chat, text='Options').grid(row=0, column=0, sticky='w')
-        ttk.Button(chat, text='User').grid(row=0, column=1, sticky='w')
-        ttk.Button(chat, text='Personality').grid(row=0, column=2, sticky='w')
+        ttk.Label(chat_options_frame, text="User: "+ username, style="White.TLabel").grid(row=0, column=0, sticky="N")
+        ttk.Button(chat_options_frame, text='Change Password').grid(row=0, column=0)
+        ttk.Label(chat_options_frame, text='Personality: '+ personality, style="White.TLabel").grid(row=0, rowspan=2, column=1, sticky="N")
+        ttk.Label(chat_options_frame, text=personality_description, style="White.TLabel", wraplength=400).grid(row=0, rowspan=2, column=2, sticky="N")
+
+
         # ttk.Button(chat, text='Admin Window', command=self.admin_window).grid(row=0, column=6, sticky='ne')
         # This button is temporarily commented out until ready to implement
-
-        # Occupies column 3-6 to space Admin Window button to the right corner
-        for i in range(3, 6):
-            chat.grid_columnconfigure(i, weight=1)
