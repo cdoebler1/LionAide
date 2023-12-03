@@ -14,7 +14,7 @@ def main():
 
     user_manager = UserManager()
     personality_manager = PersonalityManager()
-    Logon = LoginWindow(root, user_manager.users_data, personality_manager.personalities_data)
+    logon = LoginWindow(root, user_manager.users_data, personality_manager.personalities_data)
 
     root.mainloop()
 
