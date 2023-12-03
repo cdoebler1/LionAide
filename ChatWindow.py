@@ -3,12 +3,16 @@ import tkinter as tk
 from tkinter import ttk
 from tkinter import scrolledtext, END
 from langchain.chat_models import ChatOpenAI, AzureChatOpenAI
+from PasswordWindow import PasswordWindow
+
+
+def create_password_window(users_data, username):
+    PasswordWindow(users_data, username)
 
 
 class ChatWindow:
 
     def __init__(self, username, personality, users_data, personality_data):
-
         # The follow lines set the window size, color and window title
         chat = ThemedTk()
         style = ttk.Style(chat)
@@ -37,7 +41,7 @@ class ChatWindow:
 
         # Sets locations to buttons Options, user, personality and admin window
         ttk.Label(chat_options_frame, text="User: " + username, style="White.TLabel").grid(row=0, column=0, sticky="N")
-        ttk.Button(chat_options_frame, text='Change Password').grid(row=0, column=0)
+        ttk.Button(chat_options_frame, text='Change Password', command=lambda: create_password_window(users_data, username)).grid(row=0, column=0)
         ttk.Label(chat_options_frame, text='Personality: ' + personality,
                   style="White.TLabel").grid(row=0, rowspan=2, column=1, sticky="N")
         ttk.Label(chat_options_frame, text=personality_description,
@@ -81,3 +85,4 @@ def show_chatbot_response(username, personality, user_input_box, chat_log):
     chat_log.insert(tk.END, username + ": " + user_input + "\n")
     chatbot_response = get_chatbot_response(user_input)
     chat_log.insert(tk.END, personality + ": " + chatbot_response + "\n")
+
