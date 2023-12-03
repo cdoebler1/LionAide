@@ -1,8 +1,8 @@
 from tkinter import ttk
 
-from AccountHandler import AccountHandler
 from AdminWindow import AdminWindow
 from ChatWindow import ChatWindow
+from user_manager import UserManager
 
 
 class LoginWindow:
@@ -62,7 +62,7 @@ class LoginWindow:
         self.personality_entry = ttk.Combobox(user_frame, values=personality_names)
         self.personality_entry.grid(row=2, column=2, sticky="W")
 
-        # Note: Login temporarily is set to open chat_window when its pressed
+        # Login checks the users password and opens chat window if successful.
         ttk.Button(user_frame, text='Login',
                    command=lambda: self.check_credentials(users_data,
                                                           personality_data)).grid(row=3, column=2, sticky="E")
@@ -71,8 +71,8 @@ class LoginWindow:
         # Get the entered username and password
         username = self.username_entry.get()
         password = self.password_entry.get()
-        handler = AccountHandler()
-        is_valid_credentials = handler.verify_password(users_data, username, password)
+        manager = UserManager()
+        is_valid_credentials = manager.verify_password(username, password)
 
         if is_valid_credentials:
             if username == "Admin":

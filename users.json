@@ -1,7 +1,7 @@
 {
- "Admin":"adminpass",
- "Chuck":"password",
- "Alanna":"password",
- "David":"password",
- "Alex":"password"
- }
+  "Admin": "adminpass",
+  "Chuck": "password",
+  "Alanna": "anewpass",
+  "David": "password",
+  "Alex": "password"
+}
