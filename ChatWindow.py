@@ -2,9 +2,8 @@ from ttkthemes import ThemedTk
 import tkinter as tk
 from tkinter import ttk
 from tkinter import scrolledtext, END
-import openai
+from langchain.chat_models import ChatOpenAI, AzureChatOpenAI
 
-openai.api_base="http://73.175.148.240:5001"
 
 class ChatWindow:
 
@@ -56,33 +55,29 @@ class ChatWindow:
 
         # Send button
         send_button = tk.Button(query, text="Send",
-                                command=lambda: show_chatbot_response(user_input_box, chat_log))
+                                command=lambda: show_chatbot_response(username, personality, user_input_box, chat_log))
         send_button.grid(row=0, column=1, padx=10, pady=10)
 
 
-# Function to interact with the OpenAI language model and get the chatbot response
+# Get the chatbot response
 def get_chatbot_response(input_text):
-    openai.api_key = "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"
-    response = openai.Completion.create(
-        #engine="text-davinci-002",
-        prompt=input_text,
-        temperature=0.7,
-        max_tokens=150,
-        n=1,
-        stop=None,
-    )
-    return response.choices[0].text.strip()
+    openai_api_key = "not_required"
+    openai_api_base = "http://73.175.148.240:5000"
+    model = ChatOpenAI(openai_api_key=openai_api_key, openai_api_base=openai_api_base,
+                       temperature=0.5, max_tokens=512)
+    response = model.ChatCompletion(prompt=input_text)
+    return response["choices"][0]["message"].strip()
 
 
-# Function to display the chatbot response in the GUI
-def show_chatbot_response(user_input_box, chat_log):
+# Display the chatbot response in the GUI
+def show_chatbot_response(username, personality, user_input_box, chat_log):
     user_input = user_input_box.get("1.0", END).strip()
     user_input_box.delete("1.0", END)
 
     if user_input.lower() in ["exit", "quit", "bye"]:
-        chat_log.insert(tk.END, "Chatbot: Goodbye!\n")
+        chat_log.insert(tk.END, personality + ": Goodbye!\n")
         return
 
-    chat_log.insert(tk.END, "You: " + user_input + "\n")
+    chat_log.insert(tk.END, username + ": " + user_input + "\n")
     chatbot_response = get_chatbot_response(user_input)
-    chat_log.insert(tk.END, "Chatbot: " + chatbot_response + "\n")
+    chat_log.insert(tk.END, personality + ": " + chatbot_response + "\n")
