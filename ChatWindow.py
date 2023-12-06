@@ -2,7 +2,7 @@ from ttkthemes import ThemedTk
 import tkinter as tk
 from tkinter import ttk
 from tkinter import scrolledtext, END
-from langchain.chat_models import ChatOpenAI, AzureChatOpenAI
+import openai
 from PasswordWindow import PasswordWindow
 
 
@@ -64,13 +64,24 @@ class ChatWindow:
 
 
 # Get the chatbot response
-def get_chatbot_response(input_text):
-    openai_api_key = "not_required"
-    openai_api_base = "http://73.175.148.240:5000"
-    model = ChatOpenAI(openai_api_key=openai_api_key, openai_api_base=openai_api_base,
-                       temperature=0.5, max_tokens=512)
-    response = model.ChatCompletion(prompt=input_text)
-    return response["choices"][0]["message"].strip()
+def get_chatbot_response(input_text, username, personality):
+    openai.api_key = "not_required"
+    openai.api_base = "http://10.0.0.241:5000/v1"
+    model = "TheBloke_stable-vicuna-13B-GPTQ"
+    conversation = [
+        {"role": "user", "content": input_text}
+    ]
+    response = openai.ChatCompletion.create(
+        user=username,
+        character=personality,
+        model=model,
+        messages=conversation,
+        temperature=0.5,
+        max_tokens=512
+    )
+    assistant_reply = response['choices'][0]['message']['content'].strip()
+
+    return assistant_reply
 
 
 # Display the chatbot response in the GUI
@@ -83,6 +94,6 @@ def show_chatbot_response(username, personality, user_input_box, chat_log):
         return
 
     chat_log.insert(tk.END, username + ": " + user_input + "\n")
-    chatbot_response = get_chatbot_response(user_input)
+    chatbot_response = get_chatbot_response(user_input, username, personality)
     chat_log.insert(tk.END, personality + ": " + chatbot_response + "\n")
 
