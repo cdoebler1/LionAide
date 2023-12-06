@@ -66,7 +66,7 @@ class ChatWindow:
 # Get the chatbot response
 def get_chatbot_response(input_text, username, personality):
     openai.api_key = "not_required"
-    openai.api_base = "http://10.0.0.241:5000/v1"
+    openai.api_base = "http://73.175.148.240:5000/v1"
     model = "TheBloke_stable-vicuna-13B-GPTQ"
     conversation = [
         {"role": "user", "content": input_text}
