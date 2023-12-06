@@ -1,4 +1,4 @@
-from tkinter import ttk
+from tkinter import ttk, messagebox
 
 from AdminWindow import AdminWindow
 from ChatWindow import ChatWindow
@@ -80,9 +80,8 @@ class LoginWindow:
             else:
                 personality = self.personality_entry.get()
                 self.create_chat_window(username, personality, users_data, personality_data)
-            print("Successful login.")  # Text for testing
         else:
-            print("Password is incorrect.")  # Text for testing
+            messagebox.showinfo("Login Failed", f"Incorrect password.")
 
     @staticmethod
     def create_chat_window(username, personality, users_data, personality_data):

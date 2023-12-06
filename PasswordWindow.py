@@ -1,4 +1,4 @@
-from tkinter import ttk
+from tkinter import ttk, messagebox
 
 from ttkthemes import ThemedTk
 from user_manager import UserManager
@@ -41,7 +41,9 @@ class PasswordWindow:
         self.password_entry2.grid(row=2, column=2, sticky="W")
 
         ttk.Button(pass_entry_frame, text='Save',
-                   command=lambda: self.save_new_password()).grid(row=3, column=2, sticky="E")
+                   command=lambda: self.save_new_password()).grid(row=3, column=1, sticky="E")
+
+        ttk.Button(pass_entry_frame, text='Done', command=pass_window.destroy).grid(row=3, column=3)
 
     # Method that saves new password
     def save_new_password(self):
@@ -51,6 +53,6 @@ class PasswordWindow:
         if self.password1 == self.password2:
             manager = UserManager()
             manager.write_password(self.username, self.password1)
-            print("Password updated successfully.")
+            messagebox.showinfo("Password Updated", f"Password updated successfully.")
         else:
-            print("Passwords do not match.")
+            messagebox.showinfo("Change Unsuccessful", f"Passwords do not match.")
