@@ -50,9 +50,12 @@ class PasswordWindow:
         self.password1 = self.password_entry1.get()
         self.password2 = self.password_entry2.get()
 
-        if self.password1 == self.password2:
-            manager = UserManager()
-            manager.write_password(self.username, self.password1)
-            messagebox.showinfo("Password Updated", f"Password updated successfully.")
+        if (self.password1 != "") & (self.password2 != ""):
+            if self.password1 == self.password2:
+                manager = UserManager()
+                manager.write_password(self.username, self.password1)
+                messagebox.showinfo("Password Updated", f"Password updated successfully.")
+            else:
+                messagebox.showinfo("Change Unsuccessful", f"Passwords do not match.")
         else:
-            messagebox.showinfo("Change Unsuccessful", f"Passwords do not match.")
+            messagebox.showinfo("Enter New Password", f"No password entered.")
