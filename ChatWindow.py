@@ -49,12 +49,12 @@ class ChatWindow:
 
         query = ttk.Frame(chat)
         query.grid(row=1, column=0, padx=5, pady=5, sticky="NSEW")
-        user_input_box = scrolledtext.ScrolledText(query, width=60, height=4, wrap=tk.WORD)
+        user_input_box = scrolledtext.ScrolledText(query, width=80, height=8, wrap=tk.WORD)
         user_input_box.grid(row=0, column=0, padx=10, pady=10)
 
         response = ttk.Frame(chat)
         response.grid(row=2, column=0, padx=5, pady=5, sticky="NSEW")
-        chat_log = scrolledtext.ScrolledText(response, width=60, height=4, wrap=tk.WORD)
+        chat_log = scrolledtext.ScrolledText(response, width=90, height=8, wrap=tk.WORD)
         chat_log.grid(row=0, column=0, padx=10, pady=10)
 
         # Send button
@@ -76,8 +76,10 @@ def get_chatbot_response(input_text, username, personality):
         character=personality,
         model=model,
         messages=conversation,
-        temperature=0.5,
-        max_tokens=512
+        temperature=0.7,
+        max_tokens=2048,
+        mode="chat",
+        instruction_template ="StableVicuna"
     )
     assistant_reply = response['choices'][0]['message']['content'].strip()
 
