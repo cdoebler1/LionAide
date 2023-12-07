@@ -47,8 +47,8 @@ class AdminWindow:
 
     # Attempt to refresh combobox live (Failed)
     # def refresh_usernames(self):
-        # Updates the list of usernames for combobox
-        # return list(self.users_data.keys())
+    # Updates the list of usernames for combobox
+    # return list(self.users_data.keys())
 
     # Method to add a user to JSON file. NOTE: When adding or delete you must refresh app to see new list of users
     def add_user_account(self):
@@ -66,12 +66,14 @@ class AdminWindow:
             messagebox.showerror("Error", "User already exists.")
             return
 
-        users_data[user_username] = user_password
+        if (user_username != "") & (user_password != ""):
+            users_data[user_username] = user_password
 
-        with open('users.json', 'w') as file:
-            json.dump(users_data, file, indent=2)
-
-        messagebox.showinfo("User Added", f"User '{user_username}' added successfully.")
+            with open('users.json', 'w') as file:
+                json.dump(users_data, file, indent=2)
+                messagebox.showinfo("User Added", f"User '{user_username}' added successfully.")
+        else:
+            messagebox.showinfo("Error", f"Fields cannot be blank.")
 
         # (Attempt to refresh combobox live(failed))
         # self.edit_accounts_entry['values'] = self.refresh_usernames()
@@ -141,12 +143,15 @@ class AdminWindow:
             messagebox.showerror("Error", "Personality already exists.")
             return
 
-        personalities_data[personality_name] = personality_description
+        if (personality_name != "") & (personality_description != ""):
+            personalities_data[personality_name] = personality_description
 
-        with open('personalities.json', 'w') as file:
-            json.dump(personalities_data, file, indent=2)
+            with open('personalities.json', 'w') as file:
+                json.dump(personalities_data, file, indent=2)
 
-        messagebox.showinfo("Personality Added", f"Personality '{personality_name}' added successfully.")
+            messagebox.showinfo("Personality Added", f"Personality '{personality_name}' added successfully.")
+        else:
+            messagebox.showinfo("Error", f"Fields cannot be blank.")
 
     def delete_personality(self):
         personality_name = self.personality_name_entry.get()
