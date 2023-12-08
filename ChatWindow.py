@@ -99,5 +99,6 @@ def show_chatbot_response(username, personality, user_input_box, chat_log):
 
     chat_log.insert(tk.END, username + ": " + user_input + "\n")
     chatbot_response = get_chatbot_response(user_input, username, personality)
-    chat_log.insert(tk.END, personality + ": " + chatbot_response + "\n")
+    chat_log.insert(tk.END, personality + ": " + chatbot_response + "\n\n")
+    chat_log.see(tk.END)
 
