@@ -1,4 +1,4 @@
-
+# ChatWindow.py
 from ttkthemes import ThemedTk
 import tkinter as tk
 from tkinter import ttk
@@ -42,7 +42,8 @@ class ChatWindow:
 
         # Sets locations to buttons Options, user, personality and admin window
         ttk.Label(chat_options_frame, text="User: " + username, style="White.TLabel").grid(row=0, column=0, sticky="N")
-        ttk.Button(chat_options_frame, text='Change Password', command=lambda: create_password_window(users_data, username)).grid(row=1, column=0)
+        ttk.Button(chat_options_frame, text='Change Password',
+                   command=lambda: create_password_window(users_data, username)).grid(row=1, column=0)
         ttk.Label(chat_options_frame, text='Personality: ' + personality,
                   style="White.TLabel").grid(row=0, rowspan=2, column=1, sticky="N")
         ttk.Label(chat_options_frame, text=personality_description,
@@ -74,14 +75,14 @@ def get_chatbot_response(input_text, username, personality):
     ]
     response = openai.ChatCompletion.create(
         name1=username,
-		role="user",
+        role="user",
         character=personality,
         model=model,
         messages=conversation,
         temperature=0.7,
         max_tokens=2048,
         mode="chat",
-        instruction_template ="StableVicuna"
+        instruction_template="StableVicuna"
     )
     assistant_reply = response['choices'][0]['message']['content'].strip()
 
@@ -101,4 +102,3 @@ def show_chatbot_response(username, personality, user_input_box, chat_log):
     chatbot_response = get_chatbot_response(user_input, username, personality)
     chat_log.insert(tk.END, personality + ": " + chatbot_response + "\n\n")
     chat_log.see(tk.END)
-

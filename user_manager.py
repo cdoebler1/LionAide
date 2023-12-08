@@ -1,6 +1,6 @@
 # user_manager.py
 import json
-from tkinter import messagebox
+# from tkinter import messagebox
 
 
 class UserManager:
@@ -15,9 +15,7 @@ class UserManager:
         with open('users.json', "w") as f:
             json.dump(self.users_data, f, indent=2)
 
-
     # A method to verify a password.
     # Returns true if the password for this username is correct
     def verify_password(self, username, password):
         return self.users_data.get(username) == password
-

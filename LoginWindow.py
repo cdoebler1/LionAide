@@ -1,5 +1,5 @@
+# LoginWindow.py
 from tkinter import ttk, messagebox
-
 from AdminWindow import AdminWindow
 from ChatWindow import ChatWindow
 from user_manager import UserManager
@@ -18,6 +18,7 @@ class LoginWindow:
 
         master.title('LionAide Application - Login Window')
         master.resizable(False, False)
+        master.configure(background='#bfffff')
         master.geometry("460x200")
         style = ttk.Style(master)
         style.configure('White.TLabel', font='Calibri 12', foreground='white')
@@ -39,7 +40,7 @@ class LoginWindow:
         user_frame.grid_rowconfigure(3, weight=1)
 
         # Add the labels and text boxes to the frame_content frame
-        ttk.Label(user_frame, text='UserName:',
+        ttk.Label(user_frame, text='Username:',
                   style="White.TLabel").grid(row=0, column=1, padx=10, pady=10, sticky="E")
         ttk.Label(user_frame, text='Password:',
                   style="White.TLabel").grid(row=1, column=1, padx=10, pady=10, sticky="E")

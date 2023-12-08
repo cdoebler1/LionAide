@@ -8,9 +8,8 @@ from LoginWindow import LoginWindow
 
 def main():
     root = ThemedTk()
-    lionAideTheme = "blue"
     style = ttk.Style(root)
-    style.theme_use(lionAideTheme)
+    style.theme_use("blue")
 
     user_manager = UserManager()
     personality_manager = PersonalityManager()

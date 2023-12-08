@@ -1,5 +1,5 @@
 import json
-from tkinter import Toplevel, ttk, messagebox
+from tkinter import ttk, messagebox
 from ttkthemes import ThemedTk
 
 
@@ -9,23 +9,34 @@ class AdminWindow:
 
         # self.master = master
 
+        self.personality_description_entry = None
+        self.personality_name_entry = None
         self.personality_data = personality_data
         self.users_data = users_data
         self.edit_accounts_entry = None
         self.edit_password_entry = None
 
         admin = ThemedTk()
+        style = ttk.Style(admin)
+        style.theme_use("blue")
+        style.configure('White.TLabel', font='Calibri 12', foreground='white')
+
         admin.title("Admin Window")
         admin.resizable(False, False)
-        admin.geometry("400x600")
-        lion_aide_theme = "blue"
-        style = ttk.Style(admin)
-        style.theme_use(lion_aide_theme)
+        admin.configure(background='#bfffff')
+        admin.geometry("460x500")
+        admin.rowconfigure(0, weight=1)
+        admin.rowconfigure(1, weight=1)
+        admin.rowconfigure(2, weight=5)
+        admin.columnconfigure(0, weight=1)
 
         select_frame = ttk.Frame(admin)
-        select_frame.grid(row=0, column=0, padx=5, pady=5, sticky='nsew')
-
+        select_frame.grid(row=0, column=0, padx=5, pady=5, sticky='NSEW')
         select_frame.grid_columnconfigure(0, weight=1)
+        select_frame.grid_columnconfigure(1, weight=1)
+        select_frame.grid_columnconfigure(2, weight=1)
+        select_frame.grid_columnconfigure(3, weight=1)
+        select_frame.grid_rowconfigure(0, weight=1)
 
         self.accounts_frame = ttk.Frame(admin)
         self.personalities_frame = ttk.Frame(admin)
@@ -33,16 +44,16 @@ class AdminWindow:
         self.show_accounts_frame(admin)
         self.show_personalities_frame(admin)
 
-        ttk.Button(select_frame, text='Done', command=admin.destroy).grid(row=0, column=2)
+        ttk.Button(select_frame, text='Done', command=admin.destroy).grid(row=0, column=3)
 
     def show_accounts_frame(self, editing_window):
-        self.personalities_frame.grid_remove()
-        self.accounts_frame.grid(row=1, column=0, padx=5, pady=5, sticky='nsew')
+        # self.personalities_frame.grid_remove()
+        self.accounts_frame.grid(row=1, column=0, padx=5, pady=5, sticky='NSEW')
         self.edit_user_account(editing_window, self.users_data)
 
     def show_personalities_frame(self, editing_window):
-        self.accounts_frame.grid_remove()
-        self.personalities_frame.grid(row=1, column=0, padx=5, pady=5, sticky='nsew')
+        # self.accounts_frame.grid_remove()
+        self.personalities_frame.grid(row=2, column=0, padx=5, pady=5, sticky='NSEW')
         self.edit_user_personality(editing_window)
 
     # Attempt to refresh combobox live (Failed)
@@ -211,6 +222,14 @@ class AdminWindow:
 
         admin = ttk.Frame(editing_window)
         admin.grid(row=1, column=0, padx=5, pady=5, sticky='nsew')
+        admin.grid_columnconfigure(0, weight=1)
+        admin.grid_columnconfigure(1, weight=1)
+        admin.grid_columnconfigure(2, weight=1)
+        admin.grid_columnconfigure(3, weight=1)
+        admin.grid_rowconfigure(0, weight=1)
+        admin.grid_rowconfigure(1, weight=1)
+        admin.grid_rowconfigure(2, weight=1)
+        admin.grid_rowconfigure(3, weight=1)
 
         # ttk.Label(admin, text='Admin:').grid(row=1, column=2, padx=50, pady=10)
         # self.edit_accounts_entry = ttk.Entry(admin)
@@ -221,44 +240,53 @@ class AdminWindow:
         # self.edit_password_entry.grid(row=2, column=3)
 
         # Buttons that Add and Delete an account. Done closes the window.
-        ttk.Button(admin, text='Add Account', command=self.add_user_account).grid(row=3, column=2, sticky='e')
-        ttk.Button(admin, text='Delete Account', command=self.delete_user_account).grid(row=3, column=3, sticky='e')
-        ttk.Button(admin, text='Save', command=self.save_user_account).grid(row=6, column=6, sticky='e')
+        ttk.Button(admin, text='Add Account', command=self.add_user_account).grid(row=0, column=2)
+        ttk.Button(admin, text='Delete Account', command=self.delete_user_account).grid(row=3, column=2)
+        ttk.Button(admin, text='Save', command=self.save_user_account).grid(row=3, column=3)
 
         # Label for UserNames:
-        ttk.Label(admin, text='User:').grid(row=4, column=2, padx=10, pady=10)
+        ttk.Label(admin, text='Username:', style="White.TLabel").grid(row=1, column=1, padx=10, pady=10, sticky="E")
 
         # Combobox entry for Usernames:
         self.edit_accounts_entry = ttk.Combobox(admin, values=usernames)
-        self.edit_accounts_entry.grid(row=4, column=3)
+        self.edit_accounts_entry.grid(row=1, column=2, sticky="W")
 
         # Label for Password
-        ttk.Label(admin, text='Password:').grid(row=5, column=2, padx=10, pady=10)
+        ttk.Label(admin, text='Password:', style="White.TLabel").grid(row=2, column=1, padx=10, pady=10, sticky="E")
 
         # Entry box for Password
         self.edit_password_entry = ttk.Entry(admin, width=22)
-        self.edit_password_entry.grid(row=5, column=3)
+        self.edit_password_entry.grid(row=2, column=2, sticky="W")
 
     def edit_user_personality(self, editing_window):
         # Create a new frame for personality editing
         personality = ttk.Frame(editing_window)
         personality.grid(row=2, column=0, padx=5, pady=5, sticky='nsew')
+        personality.grid_columnconfigure(0, weight=1)
+        personality.grid_columnconfigure(1, weight=1)
+        personality.grid_columnconfigure(2, weight=1)
+        personality.grid_columnconfigure(3, weight=1)
+        personality.grid_rowconfigure(0, weight=1)
+        personality.grid_rowconfigure(1, weight=1)
+        personality.grid_rowconfigure(2, weight=2)
+        personality.grid_rowconfigure(3, weight=1)
 
         # Get the list of existing personality names
         personalities = list(self.personality_data.keys())
 
         # Label and Combobox for selecting a Personality Name
-        ttk.Label(personality, text='Enter a Personality Name:').grid(row=1, column=1, padx=10, pady=10)
+        ttk.Label(personality, text='Personality:', style="White.TLabel").grid(row=1, column=1,
+                                                                               padx=10, pady=10, sticky="E")
         self.personality_name_entry = ttk.Combobox(personality, values=personalities)
-        self.personality_name_entry.grid(row=1, column=2)
+        self.personality_name_entry.grid(row=1, column=2, sticky="W")
 
         # Label and Entry for entering a Personality Description
-        ttk.Label(personality, text='Enter a Description:').grid(row=2, column=1, padx=10, pady=10)
-        self.personality_description_entry = ttk.Entry(personality)
-        self.personality_description_entry.grid(row=2, column=2)
+        ttk.Label(personality, text='Description:', style="White.TLabel").grid(row=2, column=1,
+                                                                               padx=10, pady=10, sticky="E")
+        self.personality_description_entry = ttk.Entry(personality, width=22)
+        self.personality_description_entry.grid(row=2, column=2, sticky="W")
 
         # Buttons for adding, deleting, and saving a Personality when you want to change the description
-        ttk.Button(personality, text='Add Personality', command=self.add_personality).grid(row=3, column=1, sticky='e')
-        ttk.Button(personality, text='Delete Personality', command=self.delete_personality).grid(row=3, column=2,
-                                                                                                 sticky='e')
-        ttk.Button(personality, text='Save', command=self.save_personality).grid(row=4, column=1, sticky='s')
+        ttk.Button(personality, text='Add Personality', command=self.add_personality).grid(row=0, column=2)
+        ttk.Button(personality, text='Delete Personality', command=self.delete_personality).grid(row=3, column=2)
+        ttk.Button(personality, text='Save', command=self.save_personality).grid(row=3, column=3)
