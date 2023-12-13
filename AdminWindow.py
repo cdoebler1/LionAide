@@ -46,7 +46,7 @@ class AdminWindow:
         self.show_accounts_frame(admin)
         self.show_personalities_frame(admin)
 
-        ttk.Button(select_frame, text='Done', command=admin.destroy).grid(row=0, column=3)
+        ttk.Button(select_frame, text='Done', command=admin.destroy).grid(row=0, column=3, sticky='E')
 
     def show_accounts_frame(self, editing_window):
         # self.personalities_frame.grid_remove()
@@ -142,8 +142,11 @@ class AdminWindow:
         messagebox.showinfo("Password Updated", f"Password for user '{user_username}' updated successfully.")
 
     def add_personality(self):
+
         personality_name = self.personality_name_entry.get()
-        personality_description = self.personality_description_entry.get()
+
+        # Sends the personality information to the JSON reading from the description entry box
+        personality_description = self.personality_description_entry.get("1.0", 'end')
 
         try:
             with open('personalities.json', 'r') as file:
@@ -244,7 +247,7 @@ class AdminWindow:
         # Buttons that Add and Delete an account. Done closes the window.
         ttk.Button(admin, text='Add Account', command=self.add_user_account).grid(row=0, column=2)
         ttk.Button(admin, text='Delete Account', command=self.delete_user_account).grid(row=3, column=2)
-        ttk.Button(admin, text='Save', command=self.save_user_account).grid(row=3, column=3)
+        ttk.Button(admin, text='Save', command=self.save_user_account).grid(row=3, column=3, sticky='E')
 
         # Label for UserNames:
         ttk.Label(admin, text='Username:', style="White.TLabel").grid(row=1, column=1, padx=10, pady=10, sticky="E")
@@ -288,7 +291,6 @@ class AdminWindow:
         self.personality_name_entry = ttk.Combobox(personality, values=personalities)
         self.personality_name_entry.grid(row=1, column=2, sticky="W")
 
-
         # Label and Entry for entering a Personality Description
         ttk.Label(personality, text='Description:', style="White.TLabel").grid(row=2, column=1,
                                                                                padx=10, pady=10, sticky="E")
@@ -304,4 +306,4 @@ class AdminWindow:
         # Buttons for adding, deleting, and saving a Personality when you want to change the description
         ttk.Button(personality, text='Add Personality', command=self.add_personality).grid(row=0, column=2)
         ttk.Button(personality, text='Delete Personality', command=self.delete_personality).grid(row=3, column=2)
-        ttk.Button(personality, text='Save', command=self.save_personality).grid(row=3, column=3)
+        ttk.Button(personality, text='Save', command=self.save_personality).grid(row=3, column=3, sticky='E')
