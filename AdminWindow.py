@@ -1,5 +1,7 @@
 import json
-from tkinter import ttk, messagebox
+import tkinter
+from tkinter import ttk, messagebox, WORD
+from tkinter.scrolledtext import ScrolledText
 from ttkthemes import ThemedTk
 
 
@@ -192,7 +194,7 @@ class AdminWindow:
 
     def save_personality(self):
         personality_name = self.personality_name_entry.get()
-        personality_description = self.personality_description_entry.get()
+        personality_description = self.personality_description_entry.get("1.0", "end-1c")
 
         try:
             with open('personalities.json', 'r') as file:
@@ -258,6 +260,12 @@ class AdminWindow:
         self.edit_password_entry = ttk.Entry(admin, width=22)
         self.edit_password_entry.grid(row=2, column=2, sticky="W")
 
+    def update_description(self, event):
+        selected_personality_name = self.personality_name_entry.get()
+        initial_description = self.personality_data.get(selected_personality_name, "")
+        self.personality_description_entry.delete(1.0, "end")  # Clear existing text
+        self.personality_description_entry.insert(tkinter.END, initial_description)
+
     def edit_user_personality(self, editing_window):
         # Create a new frame for personality editing
         personality = ttk.Frame(editing_window)
@@ -280,10 +288,17 @@ class AdminWindow:
         self.personality_name_entry = ttk.Combobox(personality, values=personalities)
         self.personality_name_entry.grid(row=1, column=2, sticky="W")
 
+
         # Label and Entry for entering a Personality Description
         ttk.Label(personality, text='Description:', style="White.TLabel").grid(row=2, column=1,
                                                                                padx=10, pady=10, sticky="E")
-        self.personality_description_entry = ttk.Entry(personality, width=22)
+        self.personality_description_entry = ScrolledText(personality, width=22, height=10, wrap=WORD)
+
+        selected_personality_name = self.personality_name_entry.get()
+        initial_description = self.personality_data.get(selected_personality_name, "")
+        self.personality_description_entry.insert(tkinter.END, initial_description)
+        self.personality_name_entry.bind("<<ComboboxSelected>>", self.update_description)
+
         self.personality_description_entry.grid(row=2, column=2, sticky="W")
 
         # Buttons for adding, deleting, and saving a Personality when you want to change the description
